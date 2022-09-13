@@ -2,7 +2,7 @@ const CLIENT_ID = "0a3d1528dd4a48f2b8af342ec47fb4a8";
 const CLIENT_SECRET = "f3f3dbd0a43d45fea9c4b7c73ecd06cd";
 let searchInput = "Lil Gotit";
 
-async function getAPIAccessToken() {
+async function getToken() {
   let authParameters = {
     method: "POST",
     headers: {
@@ -20,25 +20,43 @@ async function getAPIAccessToken() {
     authParameters
   );
   const data = await fetchData.json();
-  const access_token = data.access_token;
-  return access_token;
+  return data.access_token;
 }
 
 
-async function search(searchKeyword) {
+async function getArtistID(searchKeyword) {
   let artistParameters = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + await getAPIAccessToken(),
+      "Authorization": "Bearer " + await getToken(),
     },
   };
-  const artistID = await fetch(
+  const search = await fetch(
     `https://api.spotify.com/v1/search?q=${searchKeyword}&type=artist`,
     artistParameters
   );
-  const response = await artistID.json();
-  console.log(response);
+  const data = await search.json();
+  return data.artists.items[0].id
 }
 
-search(searchInput);
+async function getArtistAlbums(){
+  let albumParameters = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + await getToken(),
+    },
+  }
+  const limit = 20;
+  const requestAlbums = await fetch(`https://api.spotify.com/v1/artists/${await getArtistID(searchInput)}/albums?include_groups=album&limit=${limit}`,albumParameters)
+  const albumsData = await requestAlbums.json()
+  return albumsData
+}
+
+async function openAlbums(){
+  const albums = await getArtistAlbums()
+  console.log(albums)
+}
+ 
+openAlbums()
