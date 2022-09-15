@@ -3,7 +3,7 @@ const CLIENT_SECRET = "f3f3dbd0a43d45fea9c4b7c73ecd06cd";
 let searchInput = "Lil Gotit";
 
 /**
- * 
+ *
  * @returns access token to make calls to the Spotify Web API
  */
 async function getToken() {
@@ -27,26 +27,25 @@ async function getToken() {
   return data.access_token;
 }
 
-
 /**
- * 
- * @returns the api method request and the headers required for 
+ *
+ * @returns the api method request and the headers required for
  * each call to the Spotify API
- * 
+ *
  */
-async function methodGetParameters(){
-  return  {
+async function methodGetParameters() {
+  return {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + await getToken(),
+      Authorization: "Bearer " + (await getToken()),
     },
   };
 }
 
 /**
- * 
- * @param {*} searchKeyword 
+ *
+ * @param {*} searchKeyword
  * @returns the unique Spotify artist ID based on the searchKeyword parameter
  */
 async function getArtistID(searchKeyword) {
@@ -55,69 +54,71 @@ async function getArtistID(searchKeyword) {
     await methodGetParameters()
   );
   const data = await artistIDRequest.json();
-  return data.artists.items[0].id
+  return data.artists.items[0].id;
 }
 
 /**
- * 
- * @returns an obect that includes all of the artists top tracks
+ *
+ * @returns an array of objects that includes all of the artists top tracks
+ *
  */
 async function getArtistTopTracks() {
   const topTracksRequest = await fetch(
-    `https://api.spotify.com/v1/artists/${await getArtistID(searchInput)}/top-tracks?market=us`, 
-   await methodGetParameters()
-    );
-  const data = await topTracksRequest.json()
-  return data
+    `https://api.spotify.com/v1/artists/${await getArtistID(
+      searchInput
+    )}/top-tracks?market=us`,
+    await methodGetParameters()
+  );
+  const data = await topTracksRequest.json();
+  return data.tracks;
 }
 
+/**
+ *
+ * @returns an array of objects that holds the audio analysis of each of the artist's top tracks
+ *
+ */
+async function getAudioAnalysisTopTracks() {
+  const topTracks = await getArtistTopTracks();
+  // topTracks.map((track) => console.log(track, track.external_urls, track.id));
+  const audioAnalysisTopTracks = Promise.all(
+    topTracks.map(
+      async (track) =>
+        await (
+          await fetch(
+            `https://api.spotify.com/v1/audio-analysis/${track.id}`,
+            await methodGetParameters()
+          )
+        ).json()
+    )
+  );
+  const audioAnalysisData = await audioAnalysisTopTracks;
+  return audioAnalysisData;
+}
 
+/**
+ *
+ * @param {*} minimum
+ * @param {*} maximum
+ * @param {*} tracks
+ * @param {*} filterOption
+ * @returns a filtered array based on the filterOption param and the range(minimum and maximum)
+ *
+ */
+async function filterBy(minimum, maximum, tracks, filterOption) {
+  return tracks.filter(
+    (trackAnalysis) =>
+      trackAnalysis.track[filterOption] <= maximum &&
+      trackAnalysis.track[filterOption] >= minimum
+  );
+}
 
+async function main() {
+  const audioAnalysisTopTracks = await getAudioAnalysisTopTracks();
+  console.log(audioAnalysisTopTracks);
+  audioAnalysisTopTracks.map((x) => console.log(x.track.loudness));
+  console.log(filterBy(130, 180, audioAnalysisTopTracks, "tempo"));
+  console.log(filterBy(-10, -8, audioAnalysisTopTracks, "loudness"));
+}
 
-
-
-
-
-console.log(getArtistTopTracks())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// async function getArtistAlbums(){
-//   let albumParameters = {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "Authorization": "Bearer " + await getToken(),
-//     },
-//   }
-//   const limit = 20;
-//   const requestAlbums = await fetch(`https://api.spotify.com/v1/artists/${await getArtistID(searchInput)}/albums?include_groups=album&limit=${limit}`,albumParameters)
-//   const albumsData = await requestAlbums.json()
-//   return albumsData
-// }
-
-// async function openAlbums(){
-//   const albums = await getArtistAlbums()
-//   console.log(albums)
-// }
- 
-// openAlbums()
+main();
