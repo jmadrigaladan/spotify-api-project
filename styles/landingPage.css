@@ -1,104 +1,6 @@
 /* 
 
-GENERAL
-
-*/
-
-/* 
-color: #6C63FF
-
-*/
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700;900&display=swap");
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Roboto", sans-serif;
-  box-sizing: border-box;
-}
-
-nav {
-  height: 8vh;
-}
-
-a {
-  text-decoration: none;
-}
-ul {
-  list-style: none;
-}
-
-.purple__text {
-  color: #6c63ff;
-}
-
-button {
-  cursor: pointer;
-}
-
-.purple__btn {
-  background-color: #6c63ff;
-  border: none;
-}
-
-/* 
-
-NAV 
-
-*/
-
-.nav__container {
-  display: flex;
-  align-items: center;
-  max-width: 1200px;
-  width: 100%;
-  padding: 0 24px;
-  margin: 0 auto;
-  justify-content: space-between;
-}
-
-.logo__container {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.logo {
-  width: 100px;
-}
-
-.nav__links {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 40%;
-}
-
-.logo__name {
-  font-size: 24px;
-  font-weight: 500;
-  margin-left: 16px;
-  letter-spacing: 0.5px;
-}
-
-.nav__link {
-  font-size: 18px;
-  color: #242424;
-  letter-spacing: 1px;
-}
-
-.contact__btn {
-  padding: 16px 40px;
-  border-radius: 50px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  color: white;
-  text-transform: uppercase;
-}
-/* 
-
-HERO HEADER
+LANDING PAGE
 
 */
 
@@ -166,7 +68,8 @@ header {
   padding-left: 25px;
 }
 
-.search-bar::placeholder {
+.search-bar::placeholder,
+.input__search-bar::placeholder {
   font-weight: 100;
   color: #242424;
   letter-spacing: 1px;
@@ -196,6 +99,14 @@ header {
   width: 60%;
 }
 
+.phone__navbar {
+  display: none;
+}
+
+.phone__nav {
+  border: none;
+  background-color: transparent;
+}
 .bento-menu[data-v-48b363cf] {
   width: 27px;
   height: 27px;
@@ -205,15 +116,6 @@ header {
   box-sizing: content-box;
   padding: 5px;
   cursor: pointer;
-}
-
-.phone__navbar {
-  display: none;
-}
-
-.phone__nav {
-  border: none;
-  background-color: transparent;
 }
 
 .bento-menu > div[data-v-48b363cf] {
@@ -275,13 +177,6 @@ header {
   .header__img {
     width: 50%;
   }
-  /* .landing__main--text {
-    font-size: 32px;
-  }
-
-  .landing__sub--header__text {
-    font-size: 20px;
-  } */
 }
 
 .phone__menu--active {
@@ -349,51 +244,3 @@ header {
     width: 90%;
   }
 }
-
-/* ANALYZE MUSIC */
-
-.analyze-music__nav {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 2;
-}
-
-.nav__container--wrapper {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.white__text {
-  color: #fff;
-}
-
-.overlay {
-  background-image: url(./assets/Banner\ heardfrom\ .png);
-  background-repeat: no-repeat;
-  background-position: 50%;
-  background-size: cover;
-  width: 100%;
-  height: 300px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 1;
-}
-
-.analyze__music--main-text {
-  font-size: 40px;
-  font-weight: 400;
-  letter-spacing: 1.5px;
-}
-
-.top__container--wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-

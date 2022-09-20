@@ -1,0 +1,40 @@
+/* 
+
+GENERAL
+
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700;900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+*:focus {
+  outline: none;
+}
+
+nav {
+  height: 8vh;
+}
+
+a {
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+}
+
+.purple__text {
+  color: #6c63ff;
+}
+
+button {
+  cursor: pointer;
+}
+
+.purple__btn {
+  background-color: #6c63ff;
+  border: none;
+}
