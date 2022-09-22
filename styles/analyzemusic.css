@@ -139,6 +139,7 @@
   padding: 4px 24px;
   text-align: center;
   color: #6c63ff;
+  font-weight: 500;
 }
 
 input[type="range"] {
@@ -152,18 +153,18 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 5px;
-  background: #ddd;
+  background: #6c63ff;
   border: none;
   border-radius: 3px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  border: none;
+  border: 2px solid #6c63ff;
   height: 18px;
   width: 18px;
   border-radius: 50%;
-  background: #6c63ff;
+  background: white;
   margin-top: -6px;
   cursor: pointer;
   position: relative;
@@ -174,9 +175,9 @@ input[type="range"]:focus {
   outline: none;
 }
 
-input[type="range"]:focus::-webkit-slider-runnable-track {
+/* input[type="range"]:active::-webkit-slider-runnable-track {
   background: #ccc;
-}
+} */
 
 /* SMALL PHONES, LARGE SMARTPHONES */
 @media (max-width: 768px) {
