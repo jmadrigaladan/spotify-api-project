@@ -175,6 +175,63 @@ input[type="range"]:focus {
   outline: none;
 }
 
+/* 
+
+Song Cards
+
+
+*/
+
+.songs__search-result--container {
+  margin-top: 48px;
+}
+
+.horizontal__card {
+  width: 30%;
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.song__img--wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.song__img {
+  width: 100%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.horizontal__card--wrapper {
+  height: 400px;
+  display: flex;
+  width: 250px;
+  border-radius: 5px;
+  flex-direction: column;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.text__container {
+  margin-top: 16px;
+  margin-left: 8px;
+  text-align: left;
+}
+
+.song__title--text {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.artist__name--text {
+  font-weight: 300;
+  font-size: 20px;
+}
+
 /* input[type="range"]:active::-webkit-slider-runnable-track {
   background: #ccc;
 } */

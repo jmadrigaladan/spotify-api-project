@@ -114,6 +114,7 @@ async function filterBy(minimum, maximum, tracks, filterOption) {
 }
 
 async function main() {
+  console.log(await getArtistTopTracks());
   const audioAnalysisTopTracks = await getAudioAnalysisTopTracks();
   console.log(audioAnalysisTopTracks);
   audioAnalysisTopTracks.map((x) => console.log(x.track.loudness));
