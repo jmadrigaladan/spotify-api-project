@@ -112,7 +112,7 @@
 .filter__container {
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 30%;
 }
 
 .slider {
@@ -123,6 +123,7 @@
   width: 100%;
   text-align: center;
   position: relative;
+  align-content: center;
 }
 
 .tempo__text--slider {
@@ -186,12 +187,26 @@ Song Cards
   margin-top: 48px;
 }
 
+.horizonatal__cards--container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .horizontal__card {
-  width: 30%;
+  width: 250px;
   /* border: 1px solid red; */
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 300ms ease;
+  margin: 0 24px 48px 24px;
+}
+
+.horizontal__card:hover {
+  -webkit-transform: scale(0.98);
+  -ms-transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 .song__img--wrapper {
@@ -202,7 +217,7 @@ Song Cards
 
 .song__img {
   width: 100%;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
@@ -220,6 +235,7 @@ Song Cards
   margin-top: 16px;
   margin-left: 8px;
   text-align: left;
+  cursor: default;
 }
 
 .song__title--text {
@@ -232,13 +248,51 @@ Song Cards
   font-size: 20px;
 }
 
+.spotify__text--container {
+  width: 100%;
+  margin-top: 16px;
+}
+.spotify__song--link {
+  display: flex;
+  align-items: center;
+}
+.listen__on--text {
+  margin-right: 12px;
+  color: #242424;
+  font-size: 18px;
+}
+
+.spotify__logo {
+  width: 40%;
+}
+
 /* input[type="range"]:active::-webkit-slider-runnable-track {
   background: #ccc;
 } */
 
+@media (max-width: 1023px) {
+  .filter__container {
+    width: 40%;
+  }
+}
 /* SMALL PHONES, LARGE SMARTPHONES */
 @media (max-width: 768px) {
   .analyze__music--main-text {
     font-size: 32px;
+  }
+  .filter__container {
+    width: 55%;
+  }
+}
+
+@media (max-width: 550px) {
+  .analyze__music--main-text {
+    font-size: 28px;
+  }
+  .filter__container {
+    width: 75%;
+  }
+  .range-slider .rangeValues {
+    padding: 4px 4px;
   }
 }
