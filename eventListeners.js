@@ -12,4 +12,3 @@ const navSlide = () => {
 };
 
 navSlide();
-console.log("eventlistener.js");
