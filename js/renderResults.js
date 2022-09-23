@@ -31,7 +31,9 @@ function enterKeyListener(event) {
  */
 function redirectToAnalyzeMusic() {
   let searchKeyword = localStorage.getItem("searchWord");
-  window.location.href = `${window.location.origin}/analyzeMusic.html`;
+  //Github location
+  window.location.href = `${window.location.origin}/spotify-api-project/analyzeMusic.html`;
+  // window.location.href = `${window.location.origin}/analyzeMusic.html`;
   displaySearchResults(searchKeyword);
 }
 
