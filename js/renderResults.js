@@ -1,10 +1,112 @@
 const CLIENT_ID = "0a3d1528dd4a48f2b8af342ec47fb4a8";
 const CLIENT_SECRET = "f3f3dbd0a43d45fea9c4b7c73ecd06cd";
-const searchPhrase = document.getElementById("searchBar");
+const SEARCH_PHRASE = document.getElementById("analyzeMusicSearchBar");
+
+/**
+ *
+ * Listener for the 'Enter' Keyboard Press
+ * @param {*} event
+ *
+ */
+function enterKeyListener(event) {
+  if (event.code === "Enter") {
+    // searching in analyze music page and pressed enter key on search bar
+    if (document.getElementById("home__search-btn") == null) {
+      displaySearchResults();
+    }
+    //searching in the home page and pressed enter key on search bar
+    else {
+      let homePageSearchBarValue = event.target.value;
+      localStorage.setItem("searchWord", homePageSearchBarValue);
+      redirectToAnalyzeMusic();
+    }
+  }
+}
+
+/**
+ *
+ * Redirects to the Analyze Music Page, search results should display but it is
+ * currently not working
+ *
+ */
+function redirectToAnalyzeMusic() {
+  let searchKeyword = localStorage.getItem("searchWord");
+  window.location.href = `${window.location.origin}/analyzeMusic.html`;
+  displaySearchResults(searchKeyword);
+}
+
+/**
+ *
+ * Displays search results by calling helper functions
+ * @param {*} searchTerm
+ *
+ */
+async function displaySearchResults(searchTerm) {
+  //Handles searching in analyze music page
+  if (!searchTerm) {
+    let searchKeyword = SEARCH_PHRASE.value;
+    let artistID = await getArtistID(searchKeyword);
+    let artistTopTracks = await getArtistTopTracks(artistID);
+    renderArtists(artistTopTracks);
+  }
+  // Handles Searching in the home page
+  else {
+    let artistID = await getArtistID(searchTerm);
+    let artistTopTracks = await getArtistTopTracks(artistID);
+    renderArtists(artistTopTracks);
+  }
+}
+
+/**
+ *
+ * Displays HTML
+ * @param {*} artistTracks
+ *
+ */
+function renderArtists(artistTracks) {
+  const horizontalCardsContainer = document.querySelector(
+    ".horizonatal__cards--container"
+  );
+  const songsHTML = artistTracks
+    .map((track) => {
+      return `<div class="horizontal__card">
+    <div class="horizontal__card--wrapper">
+      <div class="song__img--wrapper">
+        <img
+          class="song__img"
+          src=${track.album.images[1].url}
+          alt=""
+        />
+      </div>
+      <div class="text__container">
+        <h1 class="song__title--text">${track.name}</h1>
+        <h2 class="artist__name--text">${track.artists[0].name}</h2>
+        <div class="spotify__text--container">
+          <a
+            href=${track.external_urls.spotify}
+            target="_blank"
+            class="spotify__song--link"
+          >
+            <h1 class="listen__on--text">Listen on</h1>
+            <img
+              class="spotify__logo"
+              src="./assets/Spotify_logo_with_text.svg"
+              alt=""
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>`;
+    })
+    .join("");
+  horizontalCardsContainer.innerHTML = songsHTML;
+}
 
 /**
  *
  * @returns access token to make calls to the Spotify Web API
+ *
  */
 async function getToken() {
   let authParameters = {
@@ -47,6 +149,7 @@ async function methodGetParameters() {
  *
  * @param {*} searchKeyword
  * @returns the unique Spotify artist ID based on the searchKeyword parameter
+ *
  */
 async function getArtistID(searchKeyword) {
   const artistIDRequest = await fetch(
@@ -109,80 +212,6 @@ async function filterBy(minimum, maximum, tracks, filterOption) {
       trackAnalysis.track[filterOption] <= maximum &&
       trackAnalysis.track[filterOption] >= minimum
   );
-}
-
-function enterKeyListener(e) {
-  if (e.code === "Enter") {
-    if (document.getElementById("home__search-btn") == null) {
-      document.getElementById("analyzeMusicSearchBtn").click();
-    } else {
-      const homeSearchPhrase = document.getElementById("homeSearchBar");
-      let homeSearchWord = homeSearchPhrase.value;
-      localStorage.setItem("searchWord", homeSearchWord);
-      document.getElementById("home__search-btn").click();
-    }
-  }
-}
-
-function redirectAnalyzeMusic() {
-  let searchKeyword = localStorage.getItem("searchWord").value;
-  window.location = "analyzeMusic.html";
-  findArtist(searchKeyword);
-}
-
-async function findArtist(searchTerm) {
-  if (searchTerm == null) {
-    let searchKeyword = searchPhrase.value;
-    let artistID = await getArtistID(searchKeyword);
-    let artistTopTracks = await getArtistTopTracks(artistID);
-    renderArtists(artistTopTracks);
-  } else {
-    searchPhrase.value = searchTerm;
-    console.log(searchPhrase.value);
-    let artistID = await getArtistID(searchTerm);
-    let artistTopTracks = await getArtistTopTracks(artistID);
-    renderArtists(artistTopTracks);
-  }
-}
-
-function renderArtists(artistTracks) {
-  const horizontalCardsContainer = document.querySelector(
-    ".horizonatal__cards--container"
-  );
-  const songsHTML = artistTracks
-    .map((track) => {
-      return `<div class="horizontal__card">
-    <div class="horizontal__card--wrapper">
-      <div class="song__img--wrapper">
-        <img
-          class="song__img"
-          src=${track.album.images[1].url}
-          alt=""
-        />
-      </div>
-      <div class="text__container">
-        <h1 class="song__title--text">${track.name}</h1>
-        <h2 class="artist__name--text">${track.artists[0].name}</h2>
-        <div class="spotify__text--container">
-          <a
-            href=${track.external_urls.spotify}
-            target="_blank"
-            class="spotify__song--link"
-          >
-            <h1 class="listen__on--text">Listen on</h1>
-            <img
-              class="spotify__logo"
-              src="./assets/Spotify_logo_with_text.svg"
-              alt=""
-            />
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>`;
-    })
-    .join("");
-  horizontalCardsContainer.innerHTML = songsHTML;
 }
 
 // async function main() {
