@@ -1,41 +1,5 @@
 const CLIENT_ID = "0a3d1528dd4a48f2b8af342ec47fb4a8";
 const CLIENT_SECRET = "f3f3dbd0a43d45fea9c4b7c73ecd06cd";
-const SEARCH_PHRASE = document.getElementById("analyzeMusicSearchBar");
-
-/**
- *
- * Listener for the 'Enter' Keyboard Press
- * @param {*} event
- *
- */
-function enterKeyListener(event) {
-  if (event.code === "Enter") {
-    // searching in analyze music page and pressed enter key on search bar
-    if (document.getElementById("home__search-btn") == null) {
-      displaySearchResults();
-    }
-    //searching in the home page and pressed enter key on search bar
-    else {
-      let homePageSearchBarValue = event.target.value;
-      localStorage.setItem("searchWord", homePageSearchBarValue);
-      redirectToAnalyzeMusic();
-    }
-  }
-}
-
-/**
- *
- * Redirects to the Analyze Music Page, search results should display but it is
- * currently not working
- *
- */
-function redirectToAnalyzeMusic() {
-  let searchKeyword = localStorage.getItem("searchWord");
-  //Github location
-  window.location.href = `${window.location.origin}/spotify-api-project/analyzeMusic.html`;
-  // window.location.href = `${window.location.origin}/analyzeMusic.html`;
-  displaySearchResults(searchKeyword);
-}
 
 /**
  *
@@ -44,20 +8,12 @@ function redirectToAnalyzeMusic() {
  *
  */
 async function displaySearchResults(searchTerm) {
-  //Handles searching in analyze music page
-  if (!searchTerm) {
-    let searchKeyword = SEARCH_PHRASE.value;
-    let artistID = await getArtistID(searchKeyword);
-    let artistTopTracks = await getArtistTopTracks(artistID);
-    renderArtists(artistTopTracks);
-  }
-  // Handles Searching in the home page
-  else {
-    let artistID = await getArtistID(searchTerm);
-    let artistTopTracks = await getArtistTopTracks(artistID);
-    renderArtists(artistTopTracks);
-  }
+  let artistID = await getArtistID(searchTerm);
+  let artistTopTracks = await getArtistTopTracks(artistID);
+  renderArtists(artistTopTracks);
 }
+
+export { displaySearchResults };
 
 /**
  *
@@ -215,14 +171,3 @@ async function filterBy(minimum, maximum, tracks, filterOption) {
       trackAnalysis.track[filterOption] >= minimum
   );
 }
-
-// async function main() {
-//   console.log(await getArtistTopTracks());
-//   const audioAnalysisTopTracks = await getAudioAnalysisTopTracks();
-//   console.log(audioAnalysisTopTracks);
-//   audioAnalysisTopTracks.map((x) => console.log(x.track.loudness));
-//   console.log(filterBy(130, 180, audioAnalysisTopTracks, "tempo"));
-//   console.log(filterBy(-10, -8, audioAnalysisTopTracks, "loudness"));
-// }
-
-// main();

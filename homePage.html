@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>heardfrom – Experience No Limits</title>
-    <script src="./js/renderResults.js" defer></script>
+    <script type="module" src="./js/homePage.js" defer></script>
+    <script type="module" src="./js/enterKey.js" defer></script>
+    <script type="module" src="./js/renderResults.js" defer></script>
     <script src="./js/navResponsive.js" defer></script>
     <link rel="stylesheet" href="./styles/general.css" />
     <link rel="stylesheet" href="./styles/nav.css" />
@@ -82,13 +84,8 @@
                 class="search-bar"
                 type="text"
                 placeholder="Search by Artist"
-                onkeydown="enterKeyListener(event)"
               />
-              <button
-                class="search__btn"
-                id="home__search-btn"
-                onclick="redirectToAnalyzeMusic()"
-              >
+              <button class="search__btn" id="home__search-btn">
                 <i class="fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
