@@ -1,9 +1,11 @@
-import { enterKeyListener } from "./enterKey.js";
-import { displaySearchResults } from "./renderResults.js";
+import { displaySearchResults } from "./spotifyApiData.js";
 
 const HOME_SEARCHBAR_PHRASE = document.getElementById("homeSearchBar");
 HOME_SEARCHBAR_PHRASE.addEventListener("keydown", function (event) {
-  enterKeyListener(event);
+  if (event.code === "Enter") {
+    localStorage.setItem("searchPhrase", event.target.value);
+    redirectToAnalyzeMusic();
+  }
 });
 
 const HOME_SEARCHBTN = document.getElementById("home__search-btn");
@@ -16,11 +18,13 @@ HOME_SEARCHBTN.addEventListener("click", redirectToAnalyzeMusic);
  *
  */
 function redirectToAnalyzeMusic() {
-  let searchKeyword = localStorage.getItem("searchWord");
-  //Github location
+  let searchKeyword = localStorage.getItem("searchPhrase");
+  //Github scenario
   if (window.location.origin.includes("spotify-api-project")) {
     window.location.href = `${window.location.origin}/spotify-api-project/analyzeMusic.html`;
-  } else {
+  }
+  // local machine scenario
+  else {
     window.location.href = `${window.location.origin}/analyzeMusic.html`;
   }
   console.log(displaySearchResults(searchKeyword));
