@@ -285,12 +285,19 @@ Song Cards
 
 @media (max-width: 550px) {
   .analyze__music--main-text {
-    font-size: 28px;
+    font-size: 24px;
+  }
+  .search__results--text {
+    margin-bottom: 16px;
   }
   .filter__container {
     width: 75%;
   }
   .range-slider .rangeValues {
     padding: 4px 4px;
+  }
+  .search-results__text-filter--wrapper {
+    flex-direction: column;
+    align-items: center;
   }
 }

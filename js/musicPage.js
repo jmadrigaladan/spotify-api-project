@@ -9,3 +9,10 @@ ANALYZEMUSIC_SEARCHBAR_PHRASE.addEventListener("keydown", function (event) {
     displaySearchResults(event.target.value);
   }
 });
+
+const ANALYZE_MUSIC_SEARCHBTN = document.getElementById(
+  "analyzeMusicSearchBtn"
+);
+ANALYZE_MUSIC_SEARCHBTN.addEventListener("click", function () {
+  displaySearchResults(ANALYZEMUSIC_SEARCHBAR_PHRASE.value);
+});

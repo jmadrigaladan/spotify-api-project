@@ -4,7 +4,12 @@
  * @param {*} artistTracks
  *
  */
-function renderArtistsTopTracks(artistTracks) {
+function renderArtistsTopTracks(artistTracks, searchPhrase) {
+  localStorage.removeItem("searchPhrase");
+  document.querySelector(
+    ".search__results--text"
+  ).innerHTML = `Search Results for "${searchPhrase}"`;
+
   const horizontalCardsContainer = document.querySelector(
     ".horizonatal__cards--container"
   );

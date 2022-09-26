@@ -1,7 +1,7 @@
 const CLIENT_ID = "0a3d1528dd4a48f2b8af342ec47fb4a8";
 const CLIENT_SECRET = "f3f3dbd0a43d45fea9c4b7c73ecd06cd";
 import { renderArtistsTopTracks } from "./htmlSearchResults.js";
-
+let searchKeyword = localStorage.getItem("searchPhrase");
 
 /**
  *
@@ -10,11 +10,16 @@ import { renderArtistsTopTracks } from "./htmlSearchResults.js";
  *
  */
 async function displaySearchResults(searchTerm) {
+  console.log(searchTerm);
+  if (searchTerm == null) {
+    return;
+  }
   let artistID = await getArtistID(searchTerm);
   let artistTopTracks = await getArtistTopTracks(artistID);
-  renderArtistsTopTracks(artistTopTracks);
+  renderArtistsTopTracks(artistTopTracks, searchTerm);
 }
 
+displaySearchResults(searchKeyword);
 export { displaySearchResults };
 
 /**

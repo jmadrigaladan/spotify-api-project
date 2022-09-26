@@ -9,7 +9,10 @@ HOME_SEARCHBAR_PHRASE.addEventListener("keydown", function (event) {
 });
 
 const HOME_SEARCHBTN = document.getElementById("home__search-btn");
-HOME_SEARCHBTN.addEventListener("click", redirectToAnalyzeMusic);
+HOME_SEARCHBTN.addEventListener("click", function () {
+  localStorage.setItem("searchPhrase", HOME_SEARCHBAR_PHRASE.value);
+  redirectToAnalyzeMusic();
+});
 
 /**
  *
@@ -18,7 +21,6 @@ HOME_SEARCHBTN.addEventListener("click", redirectToAnalyzeMusic);
  *
  */
 function redirectToAnalyzeMusic() {
-  let searchKeyword = localStorage.getItem("searchPhrase");
   //Github scenario
   if (window.location.origin.includes("spotify-api-project")) {
     window.location.href = `${window.location.origin}/spotify-api-project/analyzeMusic.html`;
@@ -27,7 +29,7 @@ function redirectToAnalyzeMusic() {
   else {
     window.location.href = `${window.location.origin}/analyzeMusic.html`;
   }
-  console.log(displaySearchResults(searchKeyword));
+  // console.log(displaySearchResults(searchKeyword));
 }
 
 export { redirectToAnalyzeMusic };
