@@ -34,7 +34,7 @@ function replaceSubmitButtonIcon() {
  */
 function redirectToAnalyzeMusic() {
   //Github scenario
-  if (window.location.origin.includes("spotify-api-project")) {
+  if (window.location.origin.includes("github")) {
     window.location.href = `${window.location.origin}/spotify-api-project/analyzeMusic.html`;
   }
   // local machine scenario
