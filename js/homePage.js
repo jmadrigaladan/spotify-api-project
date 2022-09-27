@@ -1,18 +1,30 @@
-import { displaySearchResults } from "./spotifyApiData.js";
-
 const HOME_SEARCHBAR_PHRASE = document.getElementById("homeSearchBar");
+const magnifyingGlassIcon = document.querySelector(".static__state--icon");
+const loadIcon = document.querySelector(".load__state--icon");
+
 HOME_SEARCHBAR_PHRASE.addEventListener("keydown", function (event) {
   if (event.code === "Enter") {
     localStorage.setItem("searchPhrase", event.target.value);
-    redirectToAnalyzeMusic();
+    replaceSubmitButtonIcon();
+    setTimeout(() => {
+      redirectToAnalyzeMusic();
+    }, 1500);
   }
 });
 
 const HOME_SEARCHBTN = document.getElementById("home__search-btn");
 HOME_SEARCHBTN.addEventListener("click", function () {
   localStorage.setItem("searchPhrase", HOME_SEARCHBAR_PHRASE.value);
-  redirectToAnalyzeMusic();
+  replaceSubmitButtonIcon();
+  setTimeout(() => {
+    redirectToAnalyzeMusic();
+  }, 1500);
 });
+
+function replaceSubmitButtonIcon() {
+  magnifyingGlassIcon.classList.toggle("hide");
+  loadIcon.classList.toggle("show");
+}
 
 /**
  *
@@ -29,7 +41,6 @@ function redirectToAnalyzeMusic() {
   else {
     window.location.href = `${window.location.origin}/analyzeMusic.html`;
   }
-  // console.log(displaySearchResults(searchKeyword));
 }
 
 export { redirectToAnalyzeMusic };

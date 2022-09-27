@@ -1,12 +1,12 @@
 import { displaySearchResults } from "./spotifyApiData.js";
-
+const LOADER = document.getElementById("loading");
 const ANALYZEMUSIC_SEARCHBAR_PHRASE = document.getElementById(
   "analyzeMusicSearchBar"
 );
 
 ANALYZEMUSIC_SEARCHBAR_PHRASE.addEventListener("keydown", function (event) {
   if (event.code === "Enter") {
-    displaySearchResults(event.target.value);
+    display();
   }
 });
 
@@ -14,5 +14,19 @@ const ANALYZE_MUSIC_SEARCHBTN = document.getElementById(
   "analyzeMusicSearchBtn"
 );
 ANALYZE_MUSIC_SEARCHBTN.addEventListener("click", function () {
-  displaySearchResults(ANALYZEMUSIC_SEARCHBAR_PHRASE.value);
+  display();
 });
+
+/**
+ *
+ * Displays a Loading State will then display results after 2 seconds
+ *
+ */
+function display() {
+  console.log("line 32");
+  LOADER.classList.add("display");
+  setTimeout(() => {
+    LOADER.classList.remove("display");
+  }, 2000);
+  displaySearchResults(ANALYZEMUSIC_SEARCHBAR_PHRASE.value);
+}

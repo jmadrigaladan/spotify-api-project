@@ -10,7 +10,6 @@ let searchKeyword = localStorage.getItem("searchPhrase");
  *
  */
 async function displaySearchResults(searchTerm) {
-  console.log(searchTerm);
   if (searchTerm == null) {
     return;
   }
