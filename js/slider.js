@@ -1,3 +1,5 @@
+import { renderTempoTracks } from "./spotifyApiData.js";
+
 function getVals() {
   // Get slider values
   let parent = this.parentNode;
@@ -13,6 +15,7 @@ function getVals() {
 
   let displayElement = parent.getElementsByClassName("rangeValues")[0];
   displayElement.innerHTML = slide1 + " BPM" + " - " + slide2 + " BPM";
+  renderTempoTracks(slide1, slide2);
 }
 
 window.onload = function () {

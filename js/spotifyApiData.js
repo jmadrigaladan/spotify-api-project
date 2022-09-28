@@ -2,6 +2,20 @@ const CLIENT_ID = "0a3d1528dd4a48f2b8af342ec47fb4a8";
 const CLIENT_SECRET = "f3f3dbd0a43d45fea9c4b7c73ecd06cd";
 import { renderArtistsTopTracks } from "./htmlSearchResults.js";
 let searchKeyword = localStorage.getItem("searchPhrase");
+const ANALYZEMUSIC_SEARCHBAR_PHRASE = document.getElementById(
+  "analyzeMusicSearchBar"
+);
+
+/**
+ *
+ * @param {*} artistSearched
+ * @returns an array of objects of the artist top tracks
+ */
+async function topTracks(artistSearched) {
+  let artistID = await getArtistID(artistSearched);
+  let artistTopTracks = await getArtistTopTracks(artistID);
+  return artistTopTracks;
+}
 
 /**
  *
@@ -13,8 +27,7 @@ async function displaySearchResults(searchTerm) {
   if (searchTerm == null) {
     return;
   }
-  let artistID = await getArtistID(searchTerm);
-  let artistTopTracks = await getArtistTopTracks(artistID);
+  let artistTopTracks = await topTracks(searchTerm);
   renderArtistsTopTracks(artistTopTracks, searchTerm);
 }
 
@@ -97,9 +110,7 @@ async function getArtistTopTracks(artist__id) {
  * @returns an array of objects that holds the audio analysis of each of the artist's top tracks
  *
  */
-async function getAudioAnalysisTopTracks() {
-  const topTracks = await getArtistTopTracks();
-  // topTracks.map((track) => console.log(track, track.external_urls, track.id));
+async function getAudioAnalysisTopTracks(topTracks) {
   const audioAnalysisTopTracks = Promise.all(
     topTracks.map(
       async (track) =>
@@ -115,19 +126,56 @@ async function getAudioAnalysisTopTracks() {
   return audioAnalysisData;
 }
 
+async function renderTempoTracks(minimum, maximum) {
+  console.log(minimum);
+  console.log(maximum);
+  //checks if artisit have been searched, if there are no search results we will return and not render any artists
+  if (
+    !document
+      .getElementsByClassName("horizonatal__cards--container")[0]
+      .innerHTML.includes("wrapper")
+  ) {
+    return;
+  }
+  console.log("Hey");
+  //check which page was searched: Home || AnalyzeMusi
+  if (searchKeyword == null) {
+    //Searched in Analyze Music
+    console.log(ANALYZEMUSIC_SEARCHBAR_PHRASE.value);
+    let artistTopTracks = await topTracks(ANALYZEMUSIC_SEARCHBAR_PHRASE.value);
+    let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(
+      artistTopTracks
+    );
+    console.log(artistTopTracks);
+    console.log(audioAnalysisTopTracks);
+  }
+  //searched in Home Page
+  else {
+    console.log(searchKeyword);
+    let artisitTopTracks = await topTracks(searchKeyword);
+    let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(
+      artistTopTracks
+    );
+    console.log(artisitTopTracks);
+    console.log(audioAnalysisTopTracks);
+  }
+}
+
 /**
  *
  * @param {*} minimum
  * @param {*} maximum
  * @param {*} tracks
  * @param {*} filterOption
- * @returns a filtered array based on the filterOption param and the range(minimum and maximum)
+ * @returns a filtered array based on the range(minimum and maximum)
  *
  */
-async function filterBy(minimum, maximum, tracks, filterOption) {
+async function filterBy(minimum, maximum, tracks) {
   return tracks.filter(
     (trackAnalysis) =>
       trackAnalysis.track[filterOption] <= maximum &&
       trackAnalysis.track[filterOption] >= minimum
   );
 }
+
+export { renderTempoTracks };
