@@ -12,17 +12,15 @@ const ANALYZEMUSIC_SEARCHBAR_PHRASE = document.getElementById(
 /**
  *
  * @param {*} artistSearched
- * @returns an array of objects of the artist top tracks
+ * @returns an array of objects of the artist's top tracks
  */
 async function topTracks(artistSearched) {
-  let artistID = await getArtistID(artistSearched);
-  let artistTopTracks = await getArtistTopTracks(artistID);
-  return artistTopTracks;
+  return await getArtistTopTracks(await getArtistID(artistSearched));
 }
 
 /**
  *
- * Displays search results by calling helper functions
+ * Displays search results
  * @param {*} searchTerm
  *
  */
@@ -30,8 +28,7 @@ async function displaySearchResults(searchTerm) {
   if (searchTerm == null) {
     return;
   }
-  let artistTopTracks = await topTracks(searchTerm);
-  renderArtistsTopTracks(artistTopTracks, searchTerm);
+  renderArtistsTopTracks(await topTracks(searchTerm), searchTerm);
 }
 
 displaySearchResults(searchKeyword);
@@ -125,12 +122,13 @@ async function getAudioAnalysisTopTracks(topTracks) {
         ).json()
     )
   );
-  const audioAnalysisData = await audioAnalysisTopTracks;
-  return audioAnalysisData;
+  return await audioAnalysisTopTracks;
 }
 
 async function renderTempoTracks(min, max) {
-  //checks if artisit have been searched, if there are no search results we will return and not render any artists
+  //checks if artist have been searched, if there are no search results
+  //we will return and not render any artists
+  // let combinedTracks;
   if (
     !document
       .getElementsByClassName("horizonatal__cards--container")[0]
@@ -138,35 +136,41 @@ async function renderTempoTracks(min, max) {
   ) {
     return;
   }
-  //check which page was searched: Home || AnalyzeMusic
-  if (searchKeyword == null) {
-    //Searched in Analyze Music
-    let artistTopTracks = await topTracks(ANALYZEMUSIC_SEARCHBAR_PHRASE.value);
-    let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(
-      artistTopTracks
-    );
-    let combinedTracks = combineTopTracksAudio(
-      artistTopTracks,
-      audioAnalysisTopTracks
-    );
-    let filteredTracks = tempoFilter(min, max, combinedTracks);
-    renderFilteredTracks(filteredTracks);
-  }
-  //searched in Home Page
-  else {
-    let artistTopTracks = await topTracks(searchKeyword);
-    let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(
-      artistTopTracks
-    );
-    let combinedTracks = combineTopTracksAudio(
-      artistTopTracks,
-      audioAnalysisTopTracks
-    );
-    let filteredTracks = tempoFilter(min, max, combinedTracks);
-    renderFilteredTracks(filteredTracks);
-  }
+  // //if buildArray has not been called we call it
+  // if (buildCombinedArray.called) {
+  //   console.log(combinedTracks);
+  // } else {
+  //   combinedTracks = await buildCombinedArray();
+  //   console.log(combinedTracks);
+  // }
+  //check if searched on home page or analyze music page
+  let artistTopTracks = await topTracks(
+    searchKeyword ? searchKeyword : ANALYZEMUSIC_SEARCHBAR_PHRASE.value
+  );
+  let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(artistTopTracks);
+  let combinedTracks = combineTopTracksAudio(
+    artistTopTracks,
+    audioAnalysisTopTracks
+  );
+  let filteredTracks = tempoFilter(min, max, combinedTracks);
+  renderFilteredTracks(filteredTracks);
 }
 
+// async function buildCombinedArray() {
+//   buildCombinedArray.called = true;
+//   let artistTopTracks = await topTracks(
+//     searchKeyword ? searchKeyword : ANALYZEMUSIC_SEARCHBAR_PHRASE.value
+//   );
+//   let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(artistTopTracks);
+//   return combineTopTracksAudio(artistTopTracks, audioAnalysisTopTracks);
+// }
+
+/**
+ *
+ * @param {*} topTracks
+ * @param {*} audioAnalysisTracks
+ * @returns a combined array of the toptracks and the audio analysis for each track
+ */
 function combineTopTracksAudio(topTracks, audioAnalysisTracks) {
   let mergedArr = [];
   topTracks.map((track) => {
@@ -188,9 +192,7 @@ function combineTopTracksAudio(topTracks, audioAnalysisTracks) {
  * @param {*} minimum
  * @param {*} maximum
  * @param {*} tracks
- * @param {*} filterOption
- * @returns a filtered array based on the range(minimum and maximum)
- *
+ * @returns a filtered array based on the given range(minimum & maximum)
  */
 function tempoFilter(minimum, maximum, tracks) {
   return tracks.filter(

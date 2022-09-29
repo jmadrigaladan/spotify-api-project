@@ -43,4 +43,4 @@ function redirectToAnalyzeMusic() {
   }
 }
 
-export { redirectToAnalyzeMusic };
+
