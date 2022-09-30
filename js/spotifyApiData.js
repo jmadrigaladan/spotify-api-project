@@ -125,45 +125,35 @@ async function getAudioAnalysisTopTracks(topTracks) {
   return await audioAnalysisTopTracks;
 }
 
+let called = false;
+let artistTopTracks = undefined;
+let audioAnalysisTopTracks = undefined;
 async function renderTempoTracks(min, max) {
   //checks if artist have been searched, if there are no search results
   //we will return and not render any artists
-  // let combinedTracks;
   if (
     !document
       .getElementsByClassName("horizonatal__cards--container")[0]
-      .innerHTML.includes("wrapper")
+      .innerHTML.includes("wrapper") &&
+    !called
   ) {
     return;
   }
-  // //if buildArray has not been called we call it
-  // if (buildCombinedArray.called) {
-  //   console.log(combinedTracks);
-  // } else {
-  //   combinedTracks = await buildCombinedArray();
-  //   console.log(combinedTracks);
-  // }
-  //check if searched on home page or analyze music page
-  let artistTopTracks = await topTracks(
-    searchKeyword ? searchKeyword : ANALYZEMUSIC_SEARCHBAR_PHRASE.value
+  if (!called) {
+    artistTopTracks = await topTracks(
+      searchKeyword ? searchKeyword : ANALYZEMUSIC_SEARCHBAR_PHRASE.value
+    );
+    audioAnalysisTopTracks = await getAudioAnalysisTopTracks(artistTopTracks);
+    called = true;
+  }
+  renderFilteredTracks(
+    tempoFilter(
+      min,
+      max,
+      combineTopTracksAudio(artistTopTracks, audioAnalysisTopTracks)
+    )
   );
-  let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(artistTopTracks);
-  let combinedTracks = combineTopTracksAudio(
-    artistTopTracks,
-    audioAnalysisTopTracks
-  );
-  let filteredTracks = tempoFilter(min, max, combinedTracks);
-  renderFilteredTracks(filteredTracks);
 }
-
-// async function buildCombinedArray() {
-//   buildCombinedArray.called = true;
-//   let artistTopTracks = await topTracks(
-//     searchKeyword ? searchKeyword : ANALYZEMUSIC_SEARCHBAR_PHRASE.value
-//   );
-//   let audioAnalysisTopTracks = await getAudioAnalysisTopTracks(artistTopTracks);
-//   return combineTopTracksAudio(artistTopTracks, audioAnalysisTopTracks);
-// }
 
 /**
  *
