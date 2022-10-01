@@ -49,6 +49,7 @@ function renderArtistsTopTracks(artistTracks, searchPhrase) {
 }
 
 function renderFilteredTracks(tracks) {
+  console.log(tracks);
   horizontalCardsContainer.innerHTML = tracks
     .map((track) => {
       return `<div class="horizontal__card">

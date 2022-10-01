@@ -128,6 +128,7 @@ async function getAudioAnalysisTopTracks(topTracks) {
 let called = false;
 let artistTopTracks = undefined;
 let audioAnalysisTopTracks = undefined;
+let combinedTracks = undefined;
 async function renderTempoTracks(min, max) {
   //checks if artist have been searched, if there are no search results
   //we will return and not render any artists
@@ -144,15 +145,13 @@ async function renderTempoTracks(min, max) {
       searchKeyword ? searchKeyword : ANALYZEMUSIC_SEARCHBAR_PHRASE.value
     );
     audioAnalysisTopTracks = await getAudioAnalysisTopTracks(artistTopTracks);
+    combinedTracks = combineTopTracksAudio(
+      artistTopTracks,
+      audioAnalysisTopTracks
+    );
     called = true;
   }
-  renderFilteredTracks(
-    tempoFilter(
-      min,
-      max,
-      combineTopTracksAudio(artistTopTracks, audioAnalysisTopTracks)
-    )
-  );
+  return renderFilteredTracks(tempoFilter(min, max, combinedTracks));
 }
 
 /**
