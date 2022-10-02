@@ -15,18 +15,18 @@ function getVals() {
 
   let displayElement = parent.getElementsByClassName("rangeValues")[0];
   displayElement.innerHTML = slide1 + " BPM" + " - " + slide2 + " BPM";
-  // renderTempoTracks(slide1, slide2);
-  const debounce = (func, delay) => {
-    let debounceTimer;
-    return function () {
-      const context = this;
-      const args = arguments;
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    };
-  };
   debounce(renderTempoTracks(slide1, slide2), 2000);
 }
+
+const debounce = (func, delay) => {
+  let debounceTimer;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func.apply(context, args), delay);
+  };
+};
 
 window.onload = function () {
   // Initialize Sliders
